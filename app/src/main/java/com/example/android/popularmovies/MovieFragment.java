@@ -3,6 +3,8 @@ package com.example.android.popularmovies;
 import android.content.ClipData;
 import android.content.Context;
 import com.example.android.popularmovies.Movie;
+
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,9 +13,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.view.menu.MenuView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -60,15 +65,23 @@ public class MovieFragment extends Fragment{
         int id = item.getItemId();
         if(id == R.id.action_refresh){
             updateMovie();
-            return true;
         }
         else if(id == R.id.action_sort_by_most_popular) {
             Popular = true;
+            Toast.makeText(getActivity(),"Please Wait Until Sorting Completing", Toast.LENGTH_LONG).show();
+            updateMovie();
         }
         else if(id == R.id.action_sort_by_highest_rating) {
             Popular = false;
+            Toast.makeText(getActivity(),"Please Wait Until Sorting Completing", Toast.LENGTH_LONG).show();
+            updateMovie();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main_menu, menu);
     }
 
     private void updateMovie(){
@@ -81,12 +94,24 @@ public class MovieFragment extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         Toast.makeText(getActivity(),"Please Wait Until Connecting To Internet", Toast.LENGTH_LONG).show();
          gridView = (GridView) rootView.findViewById(R.id.gridView_movie);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String MovieStr = movieAdapter.getItem(position);
+                Toast.makeText(getActivity(), MovieStr , Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, MovieStr);
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         updateMovie();
     }
 
