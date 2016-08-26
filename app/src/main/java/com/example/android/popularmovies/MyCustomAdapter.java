@@ -9,26 +9,29 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 /**
  * Created by Raghda Refaat on 13-Aug-16.
  */
 public class MyCustomAdapter extends BaseAdapter {
 
-    String[] mMoviesImages;
+    ArrayList<Movie> mMovies;
     Context mContext;
-    public MyCustomAdapter(Context context,String[] moviesImages){
+
+    public MyCustomAdapter(Context context, ArrayList<Movie> movies){
         mContext = context;
-        mMoviesImages = moviesImages;
+        mMovies = movies;
     }
 
     @Override
     public int getCount() {
-        return mMoviesImages.length;
+        return mMovies.size();
     }
 
     @Override
-    public String getItem(int position) {
-        return mMoviesImages[position];
+    public Movie getItem(int position) {
+        return mMovies.get(position);
     }
 
     @Override
@@ -44,7 +47,7 @@ public class MyCustomAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.list_item_movie, null);
         }
         ImageView img = (ImageView) convertView.findViewById(R.id.image_movie);
-        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/"+mMoviesImages[position]).into(img);
+        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/"+ mMovies.get(position).getPosterPath()).into(img);
         return  convertView;
     }
 }

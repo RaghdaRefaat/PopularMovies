@@ -12,10 +12,10 @@ import android.widget.TextView;
  * Created by Raghda Refaat on 20-Aug-16.
  */
 public class DetailFragment extends Fragment {
-    String mWeatherStr;
+    Movie movie;
 
     public DetailFragment() {
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
     }
 
     @Override
@@ -25,8 +25,9 @@ public class DetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-            mWeatherStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-            //(TextView) rootView.findViewById(R.id.detail_text).setText(mForecastStr);
+            movie = (Movie) intent.getSerializableExtra(Intent.EXTRA_TEXT);
+            TextView textView = (TextView) rootView.findViewById(R.id.detail_text);
+            textView.setText(movie.getOriginalTitle());
         }
         return rootView;
     }

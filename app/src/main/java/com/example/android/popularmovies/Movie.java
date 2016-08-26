@@ -1,9 +1,11 @@
 package com.example.android.popularmovies;
 
+import java.io.Serializable;
+
 /**
  * Created by Raghda Refaat on 13-Aug-16.
  */
-public class Movie {
+public class Movie implements Serializable{
 
     private String PosterPath;
     private String Overview;

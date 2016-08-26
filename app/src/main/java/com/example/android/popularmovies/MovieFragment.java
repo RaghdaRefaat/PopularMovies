@@ -66,15 +66,8 @@ public class MovieFragment extends Fragment{
         if(id == R.id.action_refresh){
             updateMovie();
         }
-        else if(id == R.id.action_sort_by_most_popular) {
-            Popular = true;
-            Toast.makeText(getActivity(),"Please Wait Until Sorting Completing", Toast.LENGTH_LONG).show();
-            updateMovie();
-        }
-        else if(id == R.id.action_sort_by_highest_rating) {
-            Popular = false;
-            Toast.makeText(getActivity(),"Please Wait Until Sorting Completing", Toast.LENGTH_LONG).show();
-            updateMovie();
+        else if(id == R.id.action_settings) {
+            startActivity(new Intent(getContext(), SettingActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -99,10 +92,10 @@ public class MovieFragment extends Fragment{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                String MovieStr = movieAdapter.getItem(position);
-                Toast.makeText(getActivity(), MovieStr , Toast.LENGTH_SHORT).show();
+                Movie movie = movieAdapter.getItem(position);
+                Toast.makeText(getActivity(), movie.getOriginalTitle() , Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), DetailActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, MovieStr);
+                        .putExtra(Intent.EXTRA_TEXT, movie);
                 startActivity(intent);
             }
         });
@@ -218,13 +211,11 @@ public class MovieFragment extends Fragment{
         @Override
         protected void onPostExecute(ArrayList<Movie> result){
             if(result != null){
-                String [] res =  new String[result.size()];
-                for(int i = 0 ; i < result.size();i++){
-                    res[i] = result.get(i).getPosterPath();
-                }
-                movieAdapter = new MyCustomAdapter(getContext(),res);
+                movieAdapter = new MyCustomAdapter(getContext(),result);
                 gridView.setAdapter(movieAdapter);
             }
+
+
         }
 
     }
